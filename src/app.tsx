@@ -313,6 +313,12 @@ export function App() {
     }
 
     if (ev.keyCode === 32) {
+      if (position.y + 3 >= grid[0].length) {
+        setPosition((prev) => {
+          const delta = Math.abs(grid[0].length - prev.y);
+          return { ...prev, y: prev.y - delta };
+        });
+      }
       setPointIndex((prev) => (prev + 1) % shape.points.length);
     }
   };
