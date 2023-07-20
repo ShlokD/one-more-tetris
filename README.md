@@ -1,3 +1,5 @@
-# Flighty Mango
+# One More Tetris
 
-Preact + Vite + Eslint + Prettier + TailwindCSS
+Yet another tetris implementation in Preact
+
+Hosted on [One More Tetris](https://one-more-tetris.surge.sh/)
