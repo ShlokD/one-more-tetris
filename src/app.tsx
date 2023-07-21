@@ -209,40 +209,46 @@ export function App() {
 
   const placeGrid = useCallback(
     (position: Point, pointIndex: number) => {
-      setGrid((oldGrid) => {
-        const newGrid = new Array(12).fill(0).map(() => new Array(12).fill(0));
+      if (grid[0][0] === "P") {
+        setGrid(new Array(12).fill(0).map(() => new Array(12).fill(0)));
+      } else {
+        setGrid((oldGrid) => {
+          const newGrid = new Array(12)
+            .fill(0)
+            .map(() => new Array(12).fill(0));
 
-        for (let i = 0; i < oldGrid.length; ++i) {
-          for (let j = 0; j < oldGrid[i].length; ++j) {
-            if (oldGrid[i][j] === "P") {
-              newGrid[i][j] = "P";
+          for (let i = 0; i < oldGrid.length; ++i) {
+            for (let j = 0; j < oldGrid[i].length; ++j) {
+              if (oldGrid[i][j] === "P") {
+                newGrid[i][j] = "P";
+              }
             }
           }
-        }
 
-        shape.points[pointIndex].forEach((point) => {
-          const { x, y } = point;
-          const { x: offsetX, y: offsetY } = position;
-          newGrid[x + offsetX][y + offsetY] = "P";
-        });
+          shape.points[pointIndex].forEach((point) => {
+            const { x, y } = point;
+            const { x: offsetX, y: offsetY } = position;
+            newGrid[x + offsetX][y + offsetY] = "P";
+          });
 
-        let lineIndex = -1;
+          let lineIndex = -1;
 
-        newGrid.forEach((row, i) => {
-          const filled = row.every((e) => e === "P");
-          if (filled) {
-            row.fill(0);
-            lineIndex = i;
+          newGrid.forEach((row, i) => {
+            const filled = row.every((e) => e === "P");
+            if (filled) {
+              row.fill(0);
+              lineIndex = i;
+            }
+          });
+
+          if (lineIndex !== -1) {
+            for (let i = lineIndex; i > 0; i--) {
+              newGrid[i] = newGrid[i - 1];
+            }
           }
+          return newGrid;
         });
-
-        if (lineIndex !== -1) {
-          for (let i = lineIndex; i > 0; i--) {
-            newGrid[i] = newGrid[i - 1];
-          }
-        }
-        return newGrid;
-      });
+      }
 
       setPosition({ x: 0, y: 0 });
       setShape(() => getRandomShape());
